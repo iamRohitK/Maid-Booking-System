@@ -1,0 +1,156 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Maid Booking Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            background-color: rgb(16, 149, 237);
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            margin: 0;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 7px;
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        form {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="time"] {
+            padding: 5px;
+        }
+
+        button[type="submit"] {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        li {
+            width: calc(45% - 20px);
+            margin: 20px;
+            padding: 20px;
+            background-color: #f7f7f7;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .maid-details {
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .book-form {
+            display: flex;
+            align-items: center;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .no-maids {
+            color: red;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .booked-maid {
+            color: green;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Maid Booking Application</h1>
+    <form action="/" method="get">
+        <label for="booking_time">Select Booking Time:</label>
+        <input type="time" id="booking_time" name="booking_time">
+        <button type="submit">Search</button>
+    </form>
+
+    {% if maids %}
+    <h2>Available Maids:</h2>
+    <ul>
+        {% for maid in maids %}
+        <li>
+            {{ maid.name }} - Rating: {{ maid.rating }}
+            {% if booking_time %}
+            <form action="/book" method="post">
+                <input type="hidden" name="maid_id" value="{{ maid.id }}">
+                <input type="hidden" name="booking_time" value="{{ booking_time }}">
+                <button type="submit">Book</button>
+            </form>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+    {% if message %}
+    <p class="no-maids">{{ message }}</p>
+    {% endif %}
+
+    {% endif %}
+
+    {% if booked_message %}
+    <p class="booked-maid">{{ booked_message }}</p>
+    {% endif %}
+
+</body>
+
+</html>
